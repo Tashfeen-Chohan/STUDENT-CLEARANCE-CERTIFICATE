@@ -1,13 +1,25 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const db = require("./db");
+const PORT = 3000;
 
-db.query("SELECT 1")
-  .then(() => {
+const startApp = async () => {
+  try {
+    await db.getConnection();
     console.log("MySql connected successfully!");
-    app.listen(3000, () => {
-      console.log("Server is listening.");
-    });
-  })
-  .catch((error) => console.log("MySql connection error : " + error));
+    app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`));
+  } catch (error) {
+    console.log("MySql connection error : ", error);
+  }
+};
+startApp();
+
+// MIDDLEWARES FUNCTIONS
+
+app.use(express.json())
+app.use(cors())
+
+app.use("/students", require("./routes/studentRoutes"))
+
