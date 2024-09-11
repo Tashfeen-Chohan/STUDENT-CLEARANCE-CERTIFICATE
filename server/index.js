@@ -22,6 +22,5 @@ app.use(express.json())
 app.use(cors())
 
 // API ENDPOINTS
-app.use("/students", require("./routes/studentRoutes"))
-app.use("/teachers", require("./routes/teachersRoutes"))
-
+app.use("/login", require("./routes/loginRoutes"))
+app.use("/applications", require("./routes/applicationRoutes"))

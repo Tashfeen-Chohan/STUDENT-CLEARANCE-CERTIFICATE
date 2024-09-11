@@ -50,12 +50,12 @@ const loginStudent = async (req, res) => {
     const token = jwt.sign({ id: user[0].id }, process.env.JWT_SECRET);
     res.status(200).send({ message: "Student login successfully!", token });
   } catch (error) {
-    res.status(500).send({message: "Failed to Login Student"})
-    console.log(error.message)
+    res.status(500).send({ message: "Failed to Login Student" });
+    console.log(error.message);
   }
 };
 
 module.exports = {
   registerStudent,
-  loginStudent
+  loginStudent,
 };
