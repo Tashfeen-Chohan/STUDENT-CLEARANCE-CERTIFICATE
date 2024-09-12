@@ -1,6 +1,8 @@
 // src/components/LoginForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './styles.css';
+
 //import '../styles.css'; // Import the CSS file
 
 const LoginForm = () => {
@@ -10,20 +12,22 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   /* if (username.includes('-')) {
+    if (username.includes('-')) {
       navigate('/student');
     } else if (/^\d+$/.test(username)) { // Simple CNIC check (numeric only)
       navigate('/administration');
     } else {
       alert('Invalid username');
-    }*/
+    }
+
+      /*
       if (username.includes('@')) {
         navigate('/administration');
       } else if (username.includes('-')) {
         navigate('/student');
       } else {
         alert('Invalid username');
-      }
+      }*/
   };
 
 
