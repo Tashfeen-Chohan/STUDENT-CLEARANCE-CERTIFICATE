@@ -1,5 +1,7 @@
 // src/components/StudentForm.jsx
 import React, { useState } from 'react';
+import './styles.css';
+
 
 const StudentForm = () => {
   const [dept, setDept] = useState('');
