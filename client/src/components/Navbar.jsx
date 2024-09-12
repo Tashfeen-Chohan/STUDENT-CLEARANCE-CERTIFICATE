@@ -7,7 +7,7 @@ const Navbar = () => {
     toast.success("Logout Successfully");
   };
   return (
-    <nav className="shadow-lg bg-slate-100 shadow-purple-200  border-purple-400 py-3.5 px-20 rounded-b-3xl flex justify-between items-center">
+    <nav className="shadow-md bg-slate-100 shadow-purple-200  border-purple-400 py-3.5 px-20 rounded-b-3xl flex justify-between items-center">
       <div className="font-bold italic text-2xl text-purple-500">DIT - GCU</div>
       <div className="flex justify-center items-center gap-3">
         <div className="space-x-3 mr-10 font-semibold ">
