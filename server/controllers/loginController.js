@@ -26,7 +26,8 @@ const login = async (req, res) => {
       return res.status(400).send({ message: "Invalid Credentials" });
     }
 
-    res.status(200).send({ message: `${role} login successfully!`, role });
+    // const {password, ...userInfo} = user[0];
+    res.status(200).send({ message: `${role} login successfully!`, role, userInfo: user[0] });
   } catch (error) {
     res.status(500).send({ message: "Something went wrong!" });
     console.log(error.message);

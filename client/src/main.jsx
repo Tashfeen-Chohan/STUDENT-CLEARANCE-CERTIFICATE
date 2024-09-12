@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
+// import { AuthProvider } from "./components/AuthContext.js";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -21,7 +22,9 @@ createRoot(document.getElementById("root")).render(
         theme="dark"
         transition={Zoom}
       />
-      <App />
+      {/* <AuthProvider> */}
+        <App />
+      {/* </AuthProvider> */}
     </StrictMode>
     ,
   </BrowserRouter>

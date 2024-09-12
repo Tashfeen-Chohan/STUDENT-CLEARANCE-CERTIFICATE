@@ -4,33 +4,40 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const LoginForm = () => {
+const LoginForm = ({setIsLoggedIn}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!username || !password){
+      toast.error("Please provide Username & Password")
+      return;
+    }
     try {
       const response = await axios.post("http://localhost:3000/login", {
         username,
         password,
       });
+      console.log(response)
       toast.success(response.data.message);
       const role = response.data.role;
+      localStorage.setItem("User", JSON.stringify(response.data.userInfo));
+      setIsLoggedIn(true)
       if (role === "Student") {
         navigate("/student-dashboard");
       } else {
         navigate("admin-dashboard");
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.response.data.message)
     }
   };
 
   return (
-    <div className="mt-16 flex justify-center items-center">
-      <div className="max-w-lg py-10  flex justify-center items-center flex-col w-full shadow-md shadow-purple-100 border border-purple-100">
+    <div className="flex justify-center items-center h-screen">
+      <div className="max-w-lg py-10  flex justify-center items-center flex-col w-full shadow-md shadow-purple-200 border border-purple-100">
         <h2 className="text-3xl font-serif  font-bold text-purple-500">
           Welcome Back!
         </h2>
