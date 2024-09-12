@@ -1,23 +1,26 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import StatusUpdate from "./StatusUpdate";
 
-const StudentDashboard = () => {
+const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
-  const UserData = JSON.parse(localStorage.getItem("User"));
+  const [selectedApp, setSelectedApp] = useState(null);
+  const [showModel, setShowModel] = useState(false);
+  const navigate = useNavigate();
+
+  console.log(selectedApp)
 
   useEffect(() => {
-    const fetchStudentApplications = async () => {
+    const fetchAllApplications = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/applications/${UserData.id}`
-        );
-        console.log(res);
-        setApplications(res.data.stdApplications);
+        const res = await axios.get(`http://localhost:3000/applications`);
+        setApplications(res.data.allApplications);
       } catch (error) {
         console.log(error.message);
       }
     };
-    fetchStudentApplications();
+    fetchAllApplications();
   }, []);
 
   const tableRows = applications?.map((value, index) => {
@@ -32,7 +35,15 @@ const StudentDashboard = () => {
         : "text-gray-600 bg-gray-100";
 
     return (
-      <tr key={index} className="bg-white border-b hover:bg-gray-50">
+      <tr
+        // onClick={() => navigate(`/student-applications/${value.id}`)}
+        onClick={() => {
+          setShowModel(true);
+          setSelectedApp(value);
+        }}
+        key={index}
+        className="bg-white cursor-pointer border-b hover:bg-gray-50"
+      >
         <th
           scope="row"
           className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap"
@@ -44,17 +55,25 @@ const StudentDashboard = () => {
         <td className="px-6 py-3">{value.dept}</td>
         <td className="px-6 py-3">{value.purpose}</td>
         <td className="px-6 py-3">
-          <span className={`${statusClass} py-1 px-2.5 rounded text-xs`}>{status}</span>
+          <span className={`${statusClass} py-1 px-2.5 rounded text-xs`}>
+            {status}
+          </span>
         </td>
       </tr>
     );
   });
 
-  console.log(applications);
-
   return (
     <div className=" flex justify-center items-center flex-col mt-10">
-      <h2 className="text-3xl font-bold text-purple-500">My Applications</h2>
+      {showModel && (
+        <StatusUpdate
+          onClose={() => setShowModel(false)}
+          application={selectedApp}
+        />
+      )}
+      <h2 className="text-3xl font-bold text-purple-500">
+        Students Applications
+      </h2>
 
       <div class="relative overflow-x-auto shadow-md sm:rounded mt-10 max-w-5xl w-full">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -87,4 +106,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard;
+export default AdminDashboard;

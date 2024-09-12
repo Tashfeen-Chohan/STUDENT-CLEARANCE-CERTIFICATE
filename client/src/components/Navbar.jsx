@@ -3,15 +3,15 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Navbar = ({setIsLoggedIn}) => {
-  const navigate = useNavigate()
+const Navbar = ({ setIsLoggedIn }) => {
+  const navigate = useNavigate();
 
-  const UserData = JSON.parse(localStorage.getItem("User"))
+  const UserData = JSON.parse(localStorage.getItem("User"));
 
   const handleLogout = () => {
-    setIsLoggedIn(false)
-    localStorage.removeItem("User")
-    navigate("/")
+    setIsLoggedIn(false);
+    localStorage.removeItem("User");
+    navigate("/");
     toast.success("Logout Successfully");
   };
 
@@ -20,8 +20,18 @@ const Navbar = ({setIsLoggedIn}) => {
       <div className="font-bold italic text-2xl text-purple-500">DIT - GCU</div>
       <div className="flex justify-center items-center gap-3">
         <div className="space-x-3 mr-10 font-semibold ">
-          <span onClick={() => navigate("/student-dashboard")} className="cursor-pointer">My Applications</span>
-          <span onClick={() => navigate("/student-dashboard/new-application")} className="cursor-pointer">New Application</span>
+          <span
+            onClick={() => navigate("/student-dashboard")}
+            className="cursor-pointer"
+          >
+            My Applications
+          </span>
+          <span
+            onClick={() => navigate("/student-dashboard/new-application")}
+            className="cursor-pointer"
+          >
+            New Application
+          </span>
         </div>
         <FaRegUserCircle size={22} />
         <h2>{UserData ? UserData.name : "Tashfeen Chohan"}</h2>

@@ -27,7 +27,7 @@ const newApplication = async (req, res) => {
 const getAllApplications = async (req, res) => {
   try {
     const [allApplications] = await db.execute(
-      "SELECT std.name, std.roll_no, std.semester, std.dept, app.purpose, app.comment, app.status FROM applications app INNER JOIN students std on app.student_id = std.id"
+      "SELECT app.id, std.name, std.roll_no, std.semester, std.dept, app.purpose, app.comment, app.status FROM applications app INNER JOIN students std on app.student_id = std.id"
     );
     return res.status(200).send({ allApplications });
   } catch (error) {

@@ -10,6 +10,31 @@ input:disabled {
   @apply   text-gray-400 cursor-not-allowed;
 }
 
+/* Zoom-In/Zoom-Out transition styles */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
+}
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.1);
+  transition:
+    opacity 0.5s,
+    transform 0.5s;
+}
+
+
 /* styles.css */
 /* input {
   padding: 10px;
