@@ -2,14 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaCross } from "react-icons/fa";
-import { GiCrossMark } from "react-icons/gi";
 
 const StatusUpdate = ({ onClose, application }) => {
   const modelRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
-
-  const [purpose, setPurpose] = useState("");
+  const [status, setStatus] = useState(application.status);
+  const [comment, setComment] = useState(application.comment);
   const UserData = JSON.parse(localStorage.getItem("User"));
   const navigate = useNavigate();
 
@@ -20,28 +18,31 @@ const StatusUpdate = ({ onClose, application }) => {
 
   const handleClose = () => {
     setIsVisible(false);
-    setTimeout(onClose, 500); // Match this with the transition duration
+    setTimeout(onClose, 500);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!purpose) {
-      toast.error("Please Select Application Purpose");
+    if (!status) {
+      toast.error("Please Select Application Status");
       return;
     }
     try {
-      const res = await axios.post("http://localhost:3000/applications/new", {
-        student_id: UserData.id,
-        purpose,
-      });
+      const res = await axios.patch(
+        `http://localhost:3000/applications/${application.id}`,
+        {
+          status,
+          comment,
+        }
+      );
       toast.success(res.data.message);
-      setPurpose("");
-      navigate("/student-dashboard");
+      handleClose();
     } catch (error) {
       toast.error(error.response.data.message);
       console.log(error.message);
     }
   };
+
   return (
     <div
       ref={modelRef}
@@ -64,12 +65,12 @@ const StatusUpdate = ({ onClose, application }) => {
           </div>
           <form className="mt-6 w-[80%] mx-auto" onSubmit={handleSubmit}>
             {/* Name & Roll NO */}
-            <div className="flex justify-center items-center gap-5">
-              <div className="space-y-1">
+            <div className="flex justify-center items-center gap-5 ">
+              <div className="space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Name</label>
                 <input type="text" value={application.name} disabled />
               </div>
-              <div className=" space-y-1">
+              <div className=" space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Roll No</label>
                 <input type="text" value={application.roll_no} disabled />
               </div>
@@ -77,12 +78,12 @@ const StatusUpdate = ({ onClose, application }) => {
 
             {/* Semester & Dep */}
             <div className="flex justify-center items-center gap-5">
-              <div className="mt-3 space-y-1">
+              <div className="mt-3 space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Semester</label>
                 <input type="text" value={application.semester} disabled />
               </div>
               {/* Department */}
-              <div className="mt-3 space-y-1">
+              <div className="mt-3 space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Department</label>
                 <input type="text" value={application.dept} disabled />
               </div>
@@ -90,19 +91,32 @@ const StatusUpdate = ({ onClose, application }) => {
 
             {/* PURPOSE & STATUS */}
             <div className="flex justify-center items-center gap-5">
-              <div className="mt-3 space-y-1">
+              <div className="mt-3 space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Purpose</label>
                 <input type="text" value={application.purpose} disabled />
               </div>
-              <div className="mt-3 space-y-1">
+              <div className="w-[50%] mt-3 space-y-1">
                 <label className="text-sm text-slate-600">Status</label>
-                <input type="text" value={application.status} disabled />
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+                >
+                  <option value="ُPending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Incomplete">Incomplete</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
               </div>
             </div>
 
+            {/* COMMENT */}
             <div className="mt-3 space-y-1">
               <label className="text-sm text-slate-600">Comment</label>
-              <textarea className="w-full h-16 focus:ring-2 focus:ring-purple-500 outline-none py-1 px-5 text-xs bg-slate-50 border rounded"></textarea>
+              <textarea
+                onChange={(e) => setComment(e.target.value)}
+                className="w-full h-16 focus:ring-2 focus:ring-purple-500 outline-none py-1 px-5 text-xs bg-slate-50 border rounded"
+              ></textarea>
             </div>
 
             {/* ACTION BUTTONS */}

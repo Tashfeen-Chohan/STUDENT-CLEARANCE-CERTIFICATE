@@ -8,18 +8,23 @@ import StudentDashboard from "./components/StudentDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    JSON.parse(localStorage.getItem("User"))
+  );
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  
+
 
   return (
     <div>
-      {  <Navbar setIsLoggedIn={setIsLoggedIn} />}
+      {isLoggedIn && <Navbar setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
-        <Route path="/" element={<LoginForm setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route path="/" element={<LoginForm setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="/student-dashboard/new-application" element={<ApplicationForm />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard/>}/>
+        <Route
+          path="/student-dashboard/new-application"
+          element={<ApplicationForm />}
+        />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </div>
   );

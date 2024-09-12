@@ -4,15 +4,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const LoginForm = ({setIsLoggedIn}) => {
+const LoginForm = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password){
-      toast.error("Please provide Username & Password")
+    if (!username || !password) {
+      toast.error("Please provide Username & Password");
       return;
     }
     try {
@@ -23,27 +23,29 @@ const LoginForm = ({setIsLoggedIn}) => {
       toast.success(response.data.message);
       const role = response.data.role;
       localStorage.setItem("User", JSON.stringify(response.data.userInfo));
-      setIsLoggedIn(true)
+      setIsLoggedIn(true);
       if (role === "Student") {
         navigate("/student-dashboard");
       } else {
         navigate("admin-dashboard");
       }
     } catch (error) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     }
   };
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="max-w-lg py-10  flex justify-center items-center flex-col w-full shadow-md shadow-purple-200 border border-purple-100">
-        <h2 className="text-3xl font-serif  font-bold text-purple-500">
-          Welcome Back!
-        </h2>
-        <p className="text-slate-400 text-sm pb-10">
+      <div className="max-w-md pb-10 rounded-md flex justify-center items-center flex-col w-full shadow-md shadow-purple-200 border border-purple-100">
+        <div className="bg-purple-500 rounded-t-md py-2.5 flex justify-center items-center flex-col w-full">
+          <h2 className="text-2xl font-bold text-white">
+            Welcome Back!
+          </h2>
+        <p className="text-slate-100 text-sm">
           Secure access to your dashboard.
         </p>
-        <form className="mx-auto w-[70%]" onSubmit={handleSubmit}>
+        </div>
+        <form className="mx-auto mt-10 w-[80%]" onSubmit={handleSubmit}>
           <div>
             {/* <label>Username:</label> */}
             <input

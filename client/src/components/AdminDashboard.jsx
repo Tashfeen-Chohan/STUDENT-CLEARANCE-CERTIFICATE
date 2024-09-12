@@ -2,26 +2,39 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StatusUpdate from "./StatusUpdate";
+import { ScaleLoader } from "react-spinners";
 
 const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const [showModel, setShowModel] = useState(false);
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
-  console.log(selectedApp)
 
   useEffect(() => {
     const fetchAllApplications = async () => {
       try {
+        setLoading(true)
         const res = await axios.get(`http://localhost:3000/applications`);
         setApplications(res.data.allApplications);
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setLoading(false)
       }
     };
     fetchAllApplications();
-  }, []);
+  }, [showModel]);
+
+  
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen -mt-20">
+  //       <ScaleLoader height={50} width={5} color="#9333EA" />
+  //     </div>
+  //   );
+  // }
 
   const tableRows = applications?.map((value, index) => {
     const status = value.status;
@@ -31,8 +44,10 @@ const AdminDashboard = () => {
         : status === "Pending"
         ? "bg-[#FE9705] text-slate-50"
         : status === "Rejected"
-        ? "bg-[#D11313] bg-red-100"
-        : "text-gray-600 bg-gray-100";
+        ? "bg-[#D11313] text-white"
+        : status === "Incomplete"
+        ? "bg-[#0569FF] text-white"
+        : "text-gray-600 bg-gray-200";
 
     return (
       <tr
