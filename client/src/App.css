@@ -6,6 +6,10 @@ input {
   @apply w-full bg-slate-50 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-purple-500;
 }
 
+input:disabled {
+  @apply   text-gray-400 cursor-not-allowed;
+}
+
 /* styles.css */
 /* input {
   padding: 10px;

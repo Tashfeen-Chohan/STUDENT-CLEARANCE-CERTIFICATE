@@ -69,5 +69,5 @@ module.exports = {
   newApplication,
   getAllApplications,
   getStudentApplications,
-  updateApplication
+  updateApplication,
 };

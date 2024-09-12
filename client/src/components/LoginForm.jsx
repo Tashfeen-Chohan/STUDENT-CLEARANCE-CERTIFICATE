@@ -20,7 +20,6 @@ const LoginForm = ({setIsLoggedIn}) => {
         username,
         password,
       });
-      console.log(response)
       toast.success(response.data.message);
       const role = response.data.role;
       localStorage.setItem("User", JSON.stringify(response.data.userInfo));
@@ -64,7 +63,7 @@ const LoginForm = ({setIsLoggedIn}) => {
             />
           </div>
           <button
-            className="hover:bg-purple-600 transition-colors duration-500 mt-10 bg-purple-500 text-white py-2 w-full rounded"
+            className="hover:bg-purple-600 font-semibold transition-colors duration-500 mt-7 bg-purple-500 text-white py-2 w-full rounded"
             type="submit"
           >
             Login

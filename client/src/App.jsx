@@ -3,7 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
-import StudentDashboard from "./pages/StudentDashboard";
+import ApplicationForm from "./components/ApplicationForm";
+import StudentDashboard from "./components/StudentDashboard";
 
 const App = () => {
 
@@ -12,10 +13,11 @@ const App = () => {
 
   return (
     <div>
-      { isLoggedIn && <Navbar setIsLoggedIn={setIsLoggedIn} />}
+      {  <Navbar setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
         <Route path="/" element={<LoginForm setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/student-dashboard" element={<StudentDashboard />} />
+        <Route path="/student-dashboard/new-application" element={<ApplicationForm />} />
       </Routes>
     </div>
   );
