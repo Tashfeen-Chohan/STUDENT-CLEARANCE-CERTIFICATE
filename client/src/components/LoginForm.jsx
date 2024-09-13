@@ -37,7 +37,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-md pb-10 rounded-md flex justify-center items-center flex-col w-full shadow-md shadow-purple-200 border border-purple-100">
-        <div className="bg-purple-500 rounded-t-md py-2.5 flex justify-center items-center flex-col w-full">
+        <div className="bg-purple-500 rounded-t-md py-3 flex justify-center items-center flex-col w-full">
           <h2 className="text-2xl font-bold text-white">
             Welcome Back!
           </h2>
@@ -45,7 +45,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
           Secure access to your dashboard.
         </p>
         </div>
-        <form className="mx-auto mt-10 w-[80%]" onSubmit={handleSubmit}>
+        <form className="mx-auto mt-12 w-[85%]" onSubmit={handleSubmit}>
           <div>
             {/* <label>Username:</label> */}
             <input
@@ -55,7 +55,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="mt-5 w-full">
+          <div className="mt-6 w-full">
             {/* <label>Password:</label> */}
             <input
               type="password"
@@ -65,7 +65,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
             />
           </div>
           <button
-            className="hover:bg-purple-600 font-semibold transition-colors duration-500 mt-7 bg-purple-500 text-white py-2 w-full rounded"
+            className="hover:bg-purple-600 font-semibold transition-colors duration-500 mt-8 bg-purple-500 text-white py-2 w-full rounded"
             type="submit"
           >
             Login

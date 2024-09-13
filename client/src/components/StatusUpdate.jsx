@@ -114,6 +114,7 @@ const StatusUpdate = ({ onClose, application }) => {
             <div className="mt-3 space-y-1">
               <label className="text-sm text-slate-600">Comment</label>
               <textarea
+                value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 className="w-full h-16 focus:ring-2 focus:ring-purple-500 outline-none py-1 px-5 text-xs bg-slate-50 border rounded"
               ></textarea>

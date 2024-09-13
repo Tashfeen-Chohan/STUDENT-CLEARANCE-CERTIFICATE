@@ -1,10 +1,12 @@
 import React from "react";
 import { FaRegUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Navbar = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
+  const location = useLocation()
+  const path = location.pathname;
 
   const UserData = JSON.parse(localStorage.getItem("User"));
   const isAdmin = UserData.cnic;
@@ -29,13 +31,13 @@ const Navbar = ({ setIsLoggedIn }) => {
           <div className="space-x-3 mr-10 font-semibold ">
             <span
               onClick={() => navigate("/student-dashboard")}
-              className="cursor-pointer"
+              className={`${path === "/student-dashboard" && "underline text-purple-500"} cursor-pointer`}
             >
               My Applications
             </span>
             <span
               onClick={() => navigate("/student-dashboard/new-application")}
-              className="cursor-pointer"
+              className={`${path === "/student-dashboard/new-application" && "underline text-purple-500"} cursor-pointer`}
             >
               New Application
             </span>

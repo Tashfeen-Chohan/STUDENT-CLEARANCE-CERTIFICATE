@@ -65,6 +65,19 @@ const StudentDashboard = () => {
             {status}
           </span>
         </td>
+        <td className="px-6 py-3 cursor-pointer">
+          {value.comment ? (
+            <div class="relative group">
+              <p class="truncate  w-28">{value.comment}</p>
+
+              <span class=" absolute right-0 bottom-5 w-max hidden group-hover:block bg-slate-200 text-black p-2 px-4 rounded-full">
+                {value.comment}
+              </span>
+            </div>
+          ) : (
+            <span className="bg-slate-200 py-1 px-2 text-xs rounded">NULL</span>
+          )}
+        </td>
       </tr>
     );
   });
@@ -72,23 +85,13 @@ const StudentDashboard = () => {
   return (
     <div className=" flex justify-center items-center flex-col mt-20">
       {/* TABLE */}
-      {/* <div class="relative group">
-          <p class="truncate  w-10">
-            This is a long comment that will be truncated but will display the
-            full text when hovered.
-          </p>
 
-          <span class="absolute left-0 bottom-0 w-max hidden group-hover:block bg-gray-800 text-white p-2 rounded-md">
-            This is a long comment that will be truncated but will display the
-            full text when hovered.
-          </span>
-        </div> */}
       <div
         className={`${
           applications.length === 0 && "hidden"
         } w-full max-w-5xl border border-purple-300 rounded pt-5 mx-auto`}
       >
-        <h2 className="text-3xl text-center font-bold rounded-b-md text-purple-500">
+        <h2 className="text-3xl text-center font-bold  text-purple-500">
           My Applications
         </h2>
         <div class="relative overflow-x-auto shadow-md shadow-purple-100  mt-10 max-w-5xl w-full">
@@ -112,6 +115,9 @@ const StudentDashboard = () => {
                 </th>
                 <th scope="col" class="px-6 py-3">
                   STATUS
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  COMMENT
                 </th>
               </tr>
             </thead>

@@ -8,26 +8,24 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const [showModel, setShowModel] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchAllApplications = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const res = await axios.get(`http://localhost:3000/applications`);
         setApplications(res.data.allApplications);
       } catch (error) {
         console.log(error.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     fetchAllApplications();
   }, [showModel]);
 
-  
   // if (loading) {
   //   return (
   //     <div className="flex justify-center items-center h-screen -mt-20">
@@ -74,48 +72,66 @@ const AdminDashboard = () => {
             {status}
           </span>
         </td>
+        <td className="px-6 py-3">
+          {value.comment ? (
+            <div class="relative group">
+              <p class="truncate  w-28">{value.comment}</p>
+
+              <span class=" absolute right-0 bottom-5 w-max hidden group-hover:block bg-slate-200 text-black p-2 px-4 rounded-full">
+                {value.comment}
+              </span>
+            </div>
+          ) : (
+            <span className="bg-slate-200 py-1 px-2 text-xs rounded">NULL</span>
+          )}
+        </td>
       </tr>
     );
   });
 
   return (
-    <div className=" flex justify-center items-center flex-col mt-10">
+    <div className=" flex justify-center items-center flex-col mt-20">
       {showModel && (
         <StatusUpdate
           onClose={() => setShowModel(false)}
           application={selectedApp}
         />
       )}
-      <h2 className="text-3xl font-bold text-purple-500">
-        Students Applications
-      </h2>
+      <div className="w-full max-w-5xl border border-purple-300 rounded pt-5 mx-auto">
+        <h2 className="text-3xl text-center font-bold text-purple-500">
+          Students Applications
+        </h2>
 
-      <div class="relative overflow-x-auto shadow-md sm:rounded mt-10 max-w-5xl w-full">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-          <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
-            <tr>
-              <th scope="col" class="px-6 py-3">
-                NAME
-              </th>
-              <th scope="col" class="px-6 py-3">
-                ROLL NO
-              </th>
-              <th scope="col" class="px-6 py-3">
-                SEMESTER
-              </th>
-              <th scope="col" class="px-6 py-3">
-                DEPARTMENT
-              </th>
-              <th scope="col" class="px-6 py-3">
-                PURPOSE
-              </th>
-              <th scope="col" class="px-6 py-3">
-                STATUS
-              </th>
-            </tr>
-          </thead>
-          <tbody>{tableRows}</tbody>
-        </table>
+        <div class="relative overflow-x-auto shadow-md shadow-purple-100 mt-10 max-w-5xl w-full">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+            <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
+              <tr>
+                <th scope="col" class="px-6 py-3">
+                  NAME
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  ROLL NO
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  SEMESTER
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  DEPARTMENT
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  PURPOSE
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  STATUS
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  COMMENT
+                </th>
+              </tr>
+            </thead>
+            <tbody>{tableRows}</tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

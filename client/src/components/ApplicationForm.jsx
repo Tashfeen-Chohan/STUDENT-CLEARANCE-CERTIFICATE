@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const ApplicationForm = () => {
   const [purpose, setPurpose] = useState("");
   const UserData = JSON.parse(localStorage.getItem("User"));
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +51,6 @@ const ApplicationForm = () => {
 
           {/* Semester & Dep */}
           <div className="flex justify-center items-center gap-5">
-            
             <div className="mt-3 space-y-1">
               <label className="text-sm text-slate-600">Semester</label>
               <input type="text" value={UserData.semester} disabled />
@@ -82,6 +81,8 @@ const ApplicationForm = () => {
                 Internship Completion
               </option>
               <option value="FYP Clearance">FYP Clearance</option>
+              <option value="Transport Clearance">Transport Clearance</option>
+              <option value="Library Card">Library Card</option>
             </select>
           </div>
 
