@@ -57,6 +57,7 @@ const AdminDashboard = () => {
         key={index}
         className="bg-white cursor-pointer border-b hover:bg-gray-50"
       >
+        <td className="px-6 py-3">{index + 1}</td>
         <th
           scope="row"
           className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap"
@@ -97,15 +98,18 @@ const AdminDashboard = () => {
           application={selectedApp}
         />
       )}
-      <div className="w-full max-w-5xl border border-purple-300 rounded pt-5 mx-auto">
+      <div className="w-full max-w-6xl border border-purple-300 rounded pt-5 mx-auto">
         <h2 className="text-3xl text-center font-bold text-purple-500">
           Students Applications
         </h2>
 
-        <div class="relative overflow-x-auto shadow-md shadow-purple-100 mt-10 max-w-5xl w-full">
+        <div class="relative overflow-x-auto shadow-md shadow-purple-100 mt-10 max-w-6xl w-full">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
               <tr>
+                <th scope="col" class="px-6 py-3">
+                  #
+                </th>
                 <th scope="col" class="px-6 py-3">
                   NAME
                 </th>

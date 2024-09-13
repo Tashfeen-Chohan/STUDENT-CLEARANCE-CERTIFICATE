@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const LoginForm = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const togglePassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +28,8 @@ const LoginForm = ({ setIsLoggedIn }) => {
       const role = response.data.role;
       localStorage.setItem("User", JSON.stringify(response.data.userInfo));
       setIsLoggedIn(true);
+      setUsername("");
+      setPassword("");
       if (role === "Student") {
         navigate("/student-dashboard");
       } else {
@@ -38,12 +44,10 @@ const LoginForm = ({ setIsLoggedIn }) => {
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-md pb-10 rounded-md flex justify-center items-center flex-col w-full shadow-md shadow-purple-200 border border-purple-100">
         <div className="bg-purple-500 rounded-t-md py-3 flex justify-center items-center flex-col w-full">
-          <h2 className="text-2xl font-bold text-white">
-            Welcome Back!
-          </h2>
-        <p className="text-slate-100 text-sm">
-          Secure access to your dashboard.
-        </p>
+          <h2 className="text-2xl font-bold text-white">Welcome Back!</h2>
+          <p className="text-slate-100 text-sm">
+            Secure access to your dashboard.
+          </p>
         </div>
         <form className="mx-auto mt-12 w-[85%]" onSubmit={handleSubmit}>
           <div>
@@ -55,14 +59,29 @@ const LoginForm = ({ setIsLoggedIn }) => {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div className="mt-6 w-full">
+          <div className="mt-6 w-full relative">
             {/* <label>Password:</label> */}
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {showPassword ? (
+              <FaRegEye
+                onClick={togglePassword}
+                color="gray"
+                className="absolute top-3 cursor-pointer right-5"
+              />
+            ) : (
+              password.length > 0 && (
+                <FaRegEyeSlash
+                  onClick={togglePassword}
+                  color="gray "
+                  className="absolute top-3 cursor-pointer right-5"
+                />
+              )
+            )}
           </div>
           <button
             className="hover:bg-purple-600 font-semibold transition-colors duration-500 mt-8 bg-purple-500 text-white py-2 w-full rounded"
