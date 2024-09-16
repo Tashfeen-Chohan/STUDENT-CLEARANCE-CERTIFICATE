@@ -1,4 +1,4 @@
-const db = require("../db")
+const db = require("../db");
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -27,7 +27,13 @@ const login = async (req, res) => {
     }
 
     // const {password, ...userInfo} = user[0];
-    res.status(200).send({ message: `${role} login successfully!`, role, userInfo: user[0] });
+    res
+      .status(200)
+      .send({
+        message: `${role} login successfully!`,
+        role,
+        userInfo: user[0],
+      });
   } catch (error) {
     res.status(500).send({ message: "Something went wrong!" });
     console.log(error.message);
@@ -35,5 +41,5 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-  login
-}
+  login,
+};

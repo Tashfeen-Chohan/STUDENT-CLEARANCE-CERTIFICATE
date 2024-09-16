@@ -102,7 +102,7 @@ const StatusUpdate = ({ onClose, application }) => {
                   onChange={(e) => setStatus(e.target.value)}
                   className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
                 >
-                  <option value="ُPending">Pending</option>
+                  <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
                   <option value="Incomplete">Incomplete</option>
                   <option value="Rejected">Rejected</option>
