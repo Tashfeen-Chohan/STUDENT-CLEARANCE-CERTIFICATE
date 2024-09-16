@@ -10,7 +10,7 @@ import AdminDashboard from "./components/AdminDashboard";
 const App = () => {
   const UserData = JSON.parse(localStorage.getItem("User"));
   const [isLoggedIn, setIsLoggedIn] = useState(UserData);
-  const isAdmin = UserData && UserData.cinc;
+  const isAdmin = UserData && UserData.cnic;
   const isStudent = UserData && UserData.roll_no;
 
   return (

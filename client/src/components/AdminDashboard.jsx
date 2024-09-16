@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StatusUpdate from "./StatusUpdate";
-import { ScaleLoader } from "react-spinners";
 
 const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -57,12 +56,14 @@ const AdminDashboard = () => {
         key={index}
         className="bg-white cursor-pointer border-b hover:bg-gray-50"
       >
+        <td className="px-6 py-3">{index+1}</td>
         <th
           scope="row"
           className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
           {value.name}
         </th>
+        
         <td className="px-6 py-3">{value.roll_no}</td>
         <td className="px-6 py-3">{value.semester}</td>
         <td className="px-6 py-3">{value.dept}</td>
@@ -106,6 +107,9 @@ const AdminDashboard = () => {
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
               <tr>
+              <th scope="col" class="px-6 py-3">
+                  ID
+                </th>
                 <th scope="col" class="px-6 py-3">
                   NAME
                 </th>

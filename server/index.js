@@ -18,9 +18,9 @@ startApp();
 
 // MIDDLEWARES FUNCTIONS
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 // API ENDPOINTS
-app.use("/login", require("./routes/loginRoutes"))
-app.use("/applications", require("./routes/applicationRoutes"))
+app.use("/login", require("./routes/loginRoutes"));
+app.use("/applications", require("./routes/applicationRoutes"));
