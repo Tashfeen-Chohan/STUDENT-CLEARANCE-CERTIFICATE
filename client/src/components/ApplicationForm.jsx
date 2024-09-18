@@ -5,43 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 const ApplicationForm = () => {
   const [purpose, setPurpose] = useState("");
-<<<<<<< HEAD
-
-  const [isHostelResident, setIsHostelResident] = useState(""); // Tracks if student is in a hostel
-  const [hostelName, setHostelName] = useState(""); // Tracks the selected hostel name
-
-=======
   const [isHostelResident, setIsHostelResident] = useState(""); // Tracks if student is in a hostel
   const [hostelName, setHostelName] = useState(""); // Tracks the selected hostel name
 
   const [isLibraryEnrolled, setIsLibraryEnrolled] = useState(""); // Tracks if student is enrolled i library
   const [libraryName, setLibraryName] = useState(""); // Tracks the selected library name
->>>>>>> main
   const UserData = JSON.parse(localStorage.getItem("User"));
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    //Form Validation
-=======
 
     // Form validation
->>>>>>> main
     if (!purpose) {
       toast.error("Please Select Application Purpose");
       return;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> main
     if (isHostelResident === "yes" && !hostelName) {
       toast.error("Please select a hostel if you reside in one.");
       return;
     }
-<<<<<<< HEAD
-=======
 
     if (isLibraryEnrolled === "yes" && !libraryName) {
       toast.error("Please select a library if you are enrolled in one.");
@@ -49,22 +32,10 @@ const ApplicationForm = () => {
     }
 
     // Submitting form data
->>>>>>> main
     try {
       const res = await axios.post("http://localhost:3000/applications/new", {
         student_id: UserData.id,
         purpose,
-<<<<<<< HEAD
-
-        isHostelResident: isHostelResident === "yes",
-        hostelName: isHostelResident === "yes" ? hostelName : null,
-      });
-      toast.success(res.data.message);
-      setPurpose("");
-
-      setIsHostelResident(""); // Reset hostel state
-      setHostelName(""); // Reset hostel name
-=======
         isHostelResident: isHostelResident === "yes",
         hostelName: isHostelResident === "yes" ? hostelName : null,
         isLibraryEnrolled: isLibraryEnrolled === "yes",
@@ -76,7 +47,6 @@ const ApplicationForm = () => {
       setHostelName(""); // Reset hostel name
       setIsLibraryEnrolled(""); // Reset library enrollment state
       setLibraryName(""); // Reset library name
->>>>>>> main
       navigate("/student-dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -141,14 +111,8 @@ const ApplicationForm = () => {
             </select>
           </div>
 
-<<<<<<< HEAD
-
-            {/* Hostel Residency */}
-            <div className="mt-3 flex justify-center items-start flex-col gap-1">
-=======
           {/* Hostel Residency */}
           <div className="mt-3 flex justify-center items-start flex-col gap-1">
->>>>>>> main
             <label className="text-sm text-slate-600">Do you reside in a hostel?</label>
             <div className="flex gap-5">
               <label>
@@ -195,8 +159,6 @@ const ApplicationForm = () => {
             </div>
           )}
 
-<<<<<<< HEAD
-=======
 
  {/* Library Enrollment */}
           <div className="mt-3 flex justify-center items-start flex-col gap-1">
@@ -246,7 +208,6 @@ const ApplicationForm = () => {
             </div>
           )}
 
->>>>>>> main
           {/* Submit Button */}
           <button
             type="submit"
