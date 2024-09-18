@@ -1,32 +1,31 @@
+//AdminDashboard.jsx
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaWpforms } from "react-icons/fa6";
-import { BiSolidErrorAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import StatusUpdate from "./StatusUpdate";
 
-const StudentDashboard = () => {
+const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
+  const [selectedApp, setSelectedApp] = useState(null);
+  const [showModel, setShowModel] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const UserData = JSON.parse(localStorage.getItem("User"));
 
   useEffect(() => {
-    const fetchStudentApplications = async () => {
+    const fetchAllApplications = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(
-          `http://localhost:3000/applications/${UserData.id}`
-        );
-        console.log(res);
-        setApplications(res.data.stdApplications);
+        const res = await axios.get(`http://localhost:3000/applications`);
+        setApplications(res.data.allApplications);
       } catch (error) {
         console.log(error.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchStudentApplications();
-  }, []);
+    fetchAllApplications();
+  }, [showModel]);
 
   // if (loading) {
   //   return (
@@ -48,8 +47,17 @@ const StudentDashboard = () => {
         : status === "Incomplete"
         ? "bg-[#0569FF] text-white"
         : "text-gray-600 bg-gray-200";
+
     return (
-      <tr key={index} className="bg-white border-b hover:bg-gray-50">
+      <tr
+        // onClick={() => navigate(`/student-applications/${value.id}`)}
+        onClick={() => {
+          setShowModel(true);
+          setSelectedApp(value);
+        }}
+        key={index}
+        className="bg-white cursor-pointer border-b hover:bg-gray-50"
+      >
         <td className="px-6 py-3">{index + 1}</td>
         <th
           scope="row"
@@ -57,6 +65,7 @@ const StudentDashboard = () => {
         >
           {value.name}
         </th>
+        
         <td className="px-6 py-3">{value.roll_no}</td>
         <td className="px-6 py-3">{value.semester}</td>
         <td className="px-6 py-3">{value.dept}</td>
@@ -66,7 +75,7 @@ const StudentDashboard = () => {
             {status}
           </span>
         </td>
-        <td className="px-6 py-3 cursor-pointer">
+        <td className="px-6 py-3">
           {value.comment ? (
             <div class="relative group">
               <p class="truncate  w-28">{value.comment}</p>
@@ -85,17 +94,18 @@ const StudentDashboard = () => {
 
   return (
     <div className=" flex justify-center items-center flex-col mt-20">
-      {/* TABLE */}
-
-      <div
-        className={`${
-          applications.length === 0 && "hidden"
-        } w-full max-w-6xl border border-purple-300 rounded pt-5 mx-auto`}
-      >
-        <h2 className="text-3xl text-center font-bold  text-purple-500">
-          My Applications
+      {showModel && (
+        <StatusUpdate
+          onClose={() => setShowModel(false)}
+          application={selectedApp}
+        />
+      )}
+      <div className="w-full max-w-6xl border border-purple-300 rounded pt-5 mx-auto">
+        <h2 className="text-3xl text-center font-bold text-purple-500">
+          Students Applications
         </h2>
-        <div class="relative overflow-x-auto shadow-md shadow-purple-100  mt-10 max-w-6xl w-full">
+
+        <div class="relative overflow-x-auto shadow-md shadow-purple-100 mt-10 max-w-6xl w-full">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
               <tr>
@@ -129,23 +139,8 @@ const StudentDashboard = () => {
           </table>
         </div>
       </div>
-      {/* NO APPLICATION SUBMITTED */}
-      <div
-        className={`${
-          applications.length !== 0 && "hidden"
-        } flex justify-center items-center flex-col`}
-      >
-        <BiSolidErrorAlt size={150} className="text-purple-500" />
-        <span className="font-bold">No Application Submitted!</span>
-        <button
-          onClick={() => navigate("/student-dashboard/new-application")}
-          className="bg-purple-500 hover:bg-purple-600 transition-colors duration-500 font-semibold text-sm mt-3 text-white rounded py-2 px-4"
-        >
-          Submit New Application
-        </button>
-      </div>
     </div>
   );
 };
 
-export default StudentDashboard;
+export default AdminDashboard;
