@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const StatusUpdate = ({ onClose, application }) => {
   const modelRef = useRef();
@@ -10,6 +10,8 @@ const StatusUpdate = ({ onClose, application }) => {
   const [comment, setComment] = useState(application.comment);
   const UserData = JSON.parse(localStorage.getItem("User"));
   const navigate = useNavigate();
+
+  console.log(application)
 
   useEffect(() => {
     setIsVisible(true);
@@ -29,7 +31,7 @@ const StatusUpdate = ({ onClose, application }) => {
     }
     try {
       const res = await axios.patch(
-        `http://localhost:3000/applications/${application.id}`,
+        `http://localhost:3000/applications/${application.app_id}`,
         {
           status,
           comment,
@@ -68,7 +70,7 @@ const StatusUpdate = ({ onClose, application }) => {
             <div className="flex justify-center items-center gap-5 ">
               <div className="space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Name</label>
-                <input type="text" value={application.name} disabled />
+                <input type="text" value={application.std_name} disabled />
               </div>
               <div className=" space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Roll No</label>
@@ -93,7 +95,7 @@ const StatusUpdate = ({ onClose, application }) => {
             <div className="flex justify-center items-center gap-5">
               <div className="mt-3 space-y-1 w-[50%]">
                 <label className="text-sm text-slate-600">Purpose</label>
-                <input type="text" value={application.purpose} disabled />
+                <input type="text" value={application.reason} disabled />
               </div>
               <div className="w-[50%] mt-3 space-y-1">
                 <label className="text-sm text-slate-600">Status</label>

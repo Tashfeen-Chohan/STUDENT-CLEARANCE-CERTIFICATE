@@ -26,16 +26,9 @@ const AdminDashboard = () => {
     fetchAllApplications();
   }, [showModel]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen -mt-20">
-  //       <ScaleLoader height={50} width={5} color="#9333EA" />
-  //     </div>
-  //   );
-  // }
 
-  const tableRows = applications?.map((value, index) => {
-    const status = value.status;
+  const tableRows = applications[0]?.map((value, index) => {
+    const status = value.app_status;
     const statusClass =
       status === "Approved"
         ? "bg-[#3AC430] text-white"
@@ -62,12 +55,13 @@ const AdminDashboard = () => {
           scope="row"
           className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
-          {value.name}
+          {value.std_name}
         </th>
         <td className="px-6 py-3">{value.roll_no}</td>
         <td className="px-6 py-3">{value.semester}</td>
         <td className="px-6 py-3">{value.dept}</td>
-        <td className="px-6 py-3">{value.purpose}</td>
+        <td className="px-6 py-3">{value.reason}</td>
+        <td className="px-6 py-3">{value.mailing_address}</td>
         <td className="px-6 py-3">
           <span className={`${statusClass} py-1 px-2.5 rounded text-xs`}>
             {status}
@@ -99,10 +93,9 @@ const AdminDashboard = () => {
         />
       )}
       <div className="w-full max-w-6xl border border-purple-300 rounded pt-5 mx-auto">
-        <h2 className="text-3xl text-center font-bold text-purple-500">
+        <h2 className=" text-3xl text-center font-bold text-purple-500">
           Students Applications
         </h2>
-
         <div class="relative overflow-x-auto shadow-md shadow-purple-100 mt-10 max-w-6xl w-full">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
             <thead class="text-xs text-slate-100 uppercase bg-purple-600 ">
@@ -123,7 +116,10 @@ const AdminDashboard = () => {
                   DEPARTMENT
                 </th>
                 <th scope="col" class="px-6 py-3">
-                  PURPOSE
+                  REASON
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  MAILING ADDRESS
                 </th>
                 <th scope="col" class="px-6 py-3">
                   STATUS

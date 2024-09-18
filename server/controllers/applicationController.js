@@ -67,7 +67,7 @@ const updateApplication = async (req, res) => {
   const app_id = req.params.id;
   const { status, comment } = req.body;
   try {
-    await db.execute("call UpdateApplication(?, ?, ?,)", [
+    await db.execute("call UpdateApplication (?, ?, ?)", [
       status,
       comment,
       app_id,
