@@ -1,7 +1,16 @@
 const db = require("../db");
 
 const newApplication = async (req, res) => {
-  const { student_id, purpose } = req.body;
+  const {
+    student_id,
+    library_status,
+    library_id,
+    hostel_status,
+    hostel_id,
+    uni_card_possesion,
+    reason,
+    mailing_address
+  } = req.body;
   try {
     // const [duplicate] = await db.execute(
     //   "SELECT * FROM applications WHERE student_id = ? AND purpose = ?",
@@ -12,10 +21,17 @@ const newApplication = async (req, res) => {
     //     .status(400)
     //     .send({ message: "Duplicate application detected!" });
     // }
-    const [app] = await db.execute(
-      "insert into applications (student_id, purpose) values (?, ?)",
-      [student_id, purpose]
-    );
+
+    const [app] = await db.execute("call NewApplication (?,?,?,?,?,?,?,?)", [
+      student_id,
+      library_status,
+      library_id || null,
+      hostel_status,
+      hostel_id || null,
+      uni_card_possesion,
+      reason,
+      mailing_address
+    ]);
 
     res.status(200).send({ message: "Application submitted successfully!" });
   } catch (error) {
@@ -51,10 +67,11 @@ const updateApplication = async (req, res) => {
   const app_id = req.params.id;
   const { status, comment } = req.body;
   try {
-    await db.execute(
-      "call UpdateApplication(?, ?, ?,)",
-      [status, comment, app_id]
-    );
+    await db.execute("call UpdateApplication(?, ?, ?,)", [
+      status,
+      comment,
+      app_id,
+    ]);
     res.status(200).send({ message: "Application updated successfully" });
   } catch (error) {
     res.status(500).send({ message: "Something went wrong!" });

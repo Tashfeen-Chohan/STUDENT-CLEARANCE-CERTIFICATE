@@ -14,16 +14,17 @@ const login = async (req, res) => {
       query = "SELECT * FROM students WHERE roll_no = ?";
       role = "Student";
     } else {
-      query = "SELECT * FROM admins where cnic = ?";
+      query = "SELECT * FROM admins WHERE cnic = ?";
+      // query = "Call AdminLogin(?)"
       role = "Admin";
     }
 
     const [user] = await db.execute(query, [username]);
-    if (user.length === 0) {
-      return res.status(400).send({ message: "Invalid Credentials!" });
+    if (user[0].length === 0) {
+      return res.status(400).send({ message: "Invalid Credentials! Username" });
     }
     if (password !== user[0].password) {
-      return res.status(400).send({ message: "Invalid Credentials" });
+      return res.status(400).send({ message: "Invalid Credentials! Password" });
     }
 
     // const {password, ...userInfo} = user[0];
