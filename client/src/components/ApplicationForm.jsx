@@ -5,22 +5,38 @@ import { useNavigate } from "react-router-dom";
 
 const ApplicationForm = () => {
   const [purpose, setPurpose] = useState("");
+
+  const [isHostelResident, setIsHostelResident] = useState(""); // Tracks if student is in a hostel
+  const [hostelName, setHostelName] = useState(""); // Tracks the selected hostel name
+
   const UserData = JSON.parse(localStorage.getItem("User"));
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Form Validation
     if (!purpose) {
       toast.error("Please Select Application Purpose");
+      return;
+    }
+
+    if (isHostelResident === "yes" && !hostelName) {
+      toast.error("Please select a hostel if you reside in one.");
       return;
     }
     try {
       const res = await axios.post("http://localhost:3000/applications/new", {
         student_id: UserData.id,
         purpose,
+
+        isHostelResident: isHostelResident === "yes",
+        hostelName: isHostelResident === "yes" ? hostelName : null,
       });
       toast.success(res.data.message);
       setPurpose("");
+
+      setIsHostelResident(""); // Reset hostel state
+      setHostelName(""); // Reset hostel name
       navigate("/student-dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -84,6 +100,55 @@ const ApplicationForm = () => {
               <option value="FYP Clearance">FYP Clearance</option>
             </select>
           </div>
+
+
+            {/* Hostel Residency */}
+            <div className="mt-3 flex justify-center items-start flex-col gap-1">
+            <label className="text-sm text-slate-600">Do you reside in a hostel?</label>
+            <div className="flex gap-5">
+              <label>
+                <input
+                  type="radio"
+                  value="yes"
+                  checked={isHostelResident === "yes"}
+                  onChange={(e) => setIsHostelResident(e.target.value)}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="no"
+                  checked={isHostelResident === "no"}
+                  onChange={(e) => setIsHostelResident(e.target.value)}
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Hostel Dropdown (Conditionally Rendered) */}
+          {isHostelResident === "yes" && (
+            <div className="mt-3 flex justify-center items-start flex-col gap-1">
+              <label className="text-sm text-slate-600">Select Your Hostel</label>
+              <select
+                value={hostelName}
+                onChange={(e) => setHostelName(e.target.value)}
+                className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+              >
+                <option value="" disabled>
+                  -- Select Hostel --
+                </option>
+                <option value="Ashfaq Ahmed Hostel, GCU KSK Campus">
+                  Ashfaq Ahmed Hostel, GCU KSK Campus
+                </option>
+                <option value="Fatima Jinnah Girls Hostel">Fatima Jinnah Girls Hostel</option>
+                <option value="Dr. Ruth Pfau New Girls Hostel">Dr. Ruth Pfau New Girls Hostel</option>
+                <option value="Iqbal Hostel">Iqbal Hostel</option>
+                <option value="Quaid-e-Azam Hostel">Quaid-e-Azam Hostel</option>
+              </select>
+            </div>
+          )}
 
           {/* Submit Button */}
           <button
