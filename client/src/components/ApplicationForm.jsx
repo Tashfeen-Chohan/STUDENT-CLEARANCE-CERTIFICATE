@@ -7,9 +7,9 @@ const ApplicationForm = () => {
   const [libraries, setLibraries] = useState([]);
   const [hostels, setHostels] = useState([]);
   const [isLibraryEnrolled, setIsLibraryEnrolled] = useState("no");
-  const [libraryName, setLibraryName] = useState("");
+  const [libraryId, setLibraryId] = useState("");
   const [isHostelResident, setIsHostelResident] = useState("no");
-  const [hostelName, setHostelName] = useState("");
+  const [hostelId, setHostelId] = useState("");
   const [studentCardPossession, setStudentCardPossession] = useState("no");
   const [mailingAddress, setMailingAddress] = useState("");
   const [reason, setReason] = useState("");
@@ -33,23 +33,58 @@ const ApplicationForm = () => {
     fetchLibrariesAndHostels();
   }, []);
 
+  const libraryOptions = libraries?.map((value, index) => {
+    return <option value={value.id}>{value.name}</option>;
+  });
+
+  const hostelOptions = hostels.map((value) => (
+    <option value={value.id}>{value.name}</option>
+  ));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!purpose) {
-      toast.error("Please Select Application Purpose");
+
+    // Form validation
+    if (!reason) {
+      toast.error("Please Select Clearance Reason");
       return;
     }
+
+    if (isLibraryEnrolled === "yes" && !libraryId) {
+      toast.error("Please select a library if you are enrolled in one.");
+      return;
+    }
+
+    if (isHostelResident === "yes" && !hostelId) {
+      toast.error("Please select a hostel if you reside in one.");
+      return;
+    }
+
+    // Submitting form data
     try {
       const res = await axios.post("http://localhost:3000/applications/new", {
         student_id: UserData.id,
-        purpose,
+        library_status: isLibraryEnrolled === "yes" ? 1 : 0,
+        library_id: isLibraryEnrolled === "yes" ? libraryId : null,
+        hostel_status: isHostelResident === "yes" ? 1 : 0,
+        hostel_id: isHostelResident === "yes" ? hostelId : null,
+        uni_card_possesion: studentCardPossession === "yes" ? 1 : 0,
+        reason,
+        mailing_address: mailingAddress,
       });
       toast.success(res.data.message);
-      setPurpose("");
+      setReason("");
+      setIsHostelResident("");
+      setHostelId("");
+      setIsLibraryEnrolled("");
+      setLibraryId("");
+      setStudentCardPossession("");
+      setMailingAddress("");
       navigate("/student-dashboard");
     } catch (error) {
+
       toast.error(error.response.data.message);
-      console.log(error.message);
+      console.log(error);
     }
   };
 
@@ -90,8 +125,8 @@ const ApplicationForm = () => {
             </div>
           </div>
 
-         {/* REASON */}
-         <div className="mt-3 flex justify-center items-start flex-col gap-1">
+          {/* REASON */}
+          <div className="mt-3 flex justify-center items-start flex-col gap-1">
             <label className="text-sm text-slate-600">
               Reason for Leaving/ Clearance
             </label>
@@ -150,7 +185,10 @@ const ApplicationForm = () => {
                     type="radio"
                     value="no"
                     checked={isLibraryEnrolled === "no"}
-                    onChange={(e) => setIsLibraryEnrolled(e.target.value)}
+                    onChange={(e) => {
+                      setIsLibraryEnrolled(e.target.value);
+                      setLibraryId("");
+                    }}
                     className="focus:ring-0 cursor-pointer"
                   />
                   <label className="cursor-pointer" htmlFor="libraryNo">
@@ -185,7 +223,10 @@ const ApplicationForm = () => {
                     type="radio"
                     value="no"
                     checked={isHostelResident === "no"}
-                    onChange={(e) => setIsHostelResident(e.target.value)}
+                    onChange={(e) => {
+                      setIsHostelResident(e.target.value);
+                      setHostelId("");
+                    }}
                     className="focus:ring-0 cursor-pointer"
                   />
                   <label className="cursor-pointer" htmlFor="hostelNo">
@@ -203,28 +244,14 @@ const ApplicationForm = () => {
                 Select Your Library
               </label>
               <select
-                value={libraryName}
-                onChange={(e) => setLibraryName(e.target.value)}
+                value={libraryId}
+                onChange={(e) => setLibraryId(e.target.value)}
                 className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-3 text-sm border rounded"
               >
                 <option value="" disabled>
                   -- Select Library --
                 </option>
-                <option value="Fazal-i-Hussain Library">
-                  Fazal-i-Hussain Library
-                </option>
-                <option value="Postgraduate Library">
-                  Postgraduate Library
-                </option>
-                <option value="Life Sciences Library">
-                  Life Sciences Library
-                </option>
-                <option value="Departmental Libraries">
-                  Departmental Libraries
-                </option>
-                <option value="Central Library">Central Library</option>
-                <option value="Main Library">Main Library</option>
-                <option value="Law Library">Law Library</option>
+                {libraryOptions}
               </select>
             </div>
           )}
@@ -236,24 +263,14 @@ const ApplicationForm = () => {
                 Select Your Hostel
               </label>
               <select
-                value={hostelName}
-                onChange={(e) => setHostelName(e.target.value)}
+                value={hostelId}
+                onChange={(e) => setHostelId(e.target.value)}
                 className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-3 text-sm border rounded"
               >
                 <option value="" disabled>
                   -- Select Hostel --
                 </option>
-                <option value="Ashfaq Ahmed Hostel, GCU KSK Campus">
-                  Ashfaq Ahmed Hostel, GCU KSK Campus
-                </option>
-                <option value="Fatima Jinnah Girls Hostel">
-                  Fatima Jinnah Girls Hostel
-                </option>
-                <option value="Dr. Ruth Pfau New Girls Hostel">
-                  Dr. Ruth Pfau New Girls Hostel
-                </option>
-                <option value="Iqbal Hostel">Iqbal Hostel</option>
-                <option value="Quaid-e-Azam Hostel">Quaid-e-Azam Hostel</option>
+                {hostelOptions}
               </select>
             </div>
           )}
@@ -273,7 +290,9 @@ const ApplicationForm = () => {
                   onChange={(e) => setStudentCardPossession(e.target.value)}
                   className="focus:ring-0 cursor-pointer"
                 />
-                <label className="cursor-pointer" htmlFor="cardYes">Yes</label>
+                <label className="cursor-pointer" htmlFor="cardYes">
+                  Yes
+                </label>
               </div>
               <div className="flex justify-center items-center gap-2">
                 <input
@@ -284,7 +303,9 @@ const ApplicationForm = () => {
                   onChange={(e) => setStudentCardPossession(e.target.value)}
                   className="focus:ring-0 cursor-pointer"
                 />
-                <label className="cursor-pointer" htmlFor="cardNo">No</label>
+                <label className="cursor-pointer" htmlFor="cardNo">
+                  No
+                </label>
               </div>
             </div>
           </div>

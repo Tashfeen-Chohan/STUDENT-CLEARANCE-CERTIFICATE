@@ -9,19 +9,10 @@ const newApplication = async (req, res) => {
     hostel_id,
     uni_card_possesion,
     reason,
-    mailing_address
+    mailing_address,
   } = req.body;
-  try {
-    // const [duplicate] = await db.execute(
-    //   "SELECT * FROM applications WHERE student_id = ? AND purpose = ?",
-    //   [student_id, purpose]
-    // );
-    // if (duplicate.length > 0) {
-    //   return res
-    //     .status(400)
-    //     .send({ message: "Duplicate application detected!" });
-    // }
 
+  try {
     const [app] = await db.execute("call NewApplication (?,?,?,?,?,?,?,?)", [
       student_id,
       library_status,
@@ -30,12 +21,19 @@ const newApplication = async (req, res) => {
       hostel_id || null,
       uni_card_possesion,
       reason,
-      mailing_address
+      mailing_address,
     ]);
 
     res.status(200).send({ message: "Application submitted successfully!" });
   } catch (error) {
-    res.status(500).send({ message: "Something went wrong" });
+    if (error.code === "ER_DUP_ENTRY") {
+      res
+        .status(400)
+        .send({ message: "Duplicate entry! The application already exists." });
+    } else {
+      res.status(500).send({ message: "Something went wrong" });
+    }
+
     console.log(error.message);
   }
 };
@@ -83,17 +81,17 @@ const getAllLibrariesAndHostels = async (req, res) => {
   try {
     const libraries = await db.execute("call GetAllLibraries()");
     const hostels = await db.execute("call GetAllHostels()");
-    res.status(200).send({libraries, hostels})
+    res.status(200).send({ libraries, hostels });
   } catch (error) {
-    res.status(500).send({message: "Something went wrong!"})
-    console.log(error.message)
+    res.status(500).send({ message: "Something went wrong!" });
+    console.log(error.message);
   }
-}
+};
 
 module.exports = {
   newApplication,
   getAllApplications,
   getStudentApplications,
   updateApplication,
-  getAllLibrariesAndHostels
+  getAllLibrariesAndHostels,
 };
