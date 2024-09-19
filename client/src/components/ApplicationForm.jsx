@@ -4,12 +4,19 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const ApplicationForm = () => {
-  const [purpose, setPurpose] = useState("");
-  const [isHostelResident, setIsHostelResident] = useState(""); // Tracks if student is in a hostel
-  const [hostelName, setHostelName] = useState(""); // Tracks the selected hostel name
+  //const [purpose, setPurpose] = useState("");
+  const [reason,setReason] = useState("");
 
-  const [isLibraryEnrolled, setIsLibraryEnrolled] = useState(""); // Tracks if student is enrolled i library
-  const [libraryName, setLibraryName] = useState(""); // Tracks the selected library name
+  const [isLibraryEnrolled, setIsLibraryEnrolled] = useState("");
+  const [libraryName, setLibraryName] = useState(""); 
+  const [isHostelResident, setIsHostelResident] = useState("");
+  const [hostelName, setHostelName] = useState(""); 
+
+  const [studentCardPossession, setStudentCardPossession] = useState(""); 
+
+  const [mailingAddress, setMailingAddress] = useState("");
+
+
   const UserData = JSON.parse(localStorage.getItem("User"));
   const navigate = useNavigate();
 
@@ -35,18 +42,23 @@ const ApplicationForm = () => {
     try {
       const res = await axios.post("http://localhost:3000/applications/new", {
         student_id: UserData.id,
-        purpose,
+       
+        reason,
+        mailingAddress,
+        StudentCardPossession,
         isHostelResident: isHostelResident === "yes",
         hostelName: isHostelResident === "yes" ? hostelName : null,
         isLibraryEnrolled: isLibraryEnrolled === "yes",
         libraryName: isLibraryEnrolled === "yes" ? libraryName : null,
       });
       toast.success(res.data.message);
-      setPurpose("");
+      setReason("");
       setIsHostelResident(""); // Reset hostel state
       setHostelName(""); // Reset hostel name
       setIsLibraryEnrolled(""); // Reset library enrollment state
       setLibraryName(""); // Reset library name
+      setStudentCardPossession("");
+      setMailingAddress("");
       navigate("/student-dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -58,7 +70,7 @@ const ApplicationForm = () => {
     <div className="flex justify-center items-center my-10">
       <div className="max-w-2xl w-full border border-purple-100 rounded-md shadow-md shadow-purple-200 pb-7 flex justify-center items-center flex-col">
         <div className="bg-purple-500 rounded-t-md w-full text-white flex justify-center items-center flex-col py-2">
-          <h2 className="text-2xl font-bold text-white">Application Form</h2>
+          <h2 className="text-2xl font-bold text-white">University Clearance Form</h2>
           <p className="text-sm text-slate-100 pt-2">
             Submit Your Clearance Form to Complete the Process
           </p>
@@ -89,52 +101,129 @@ const ApplicationForm = () => {
             </div>
           </div>
 
-          {/* PURPOSE */}
-          <div className="mt-3 flex justify-center items-start flex-col gap-1">
-            <label className="text-sm text-slate-600">Application Purpose</label>
-            <select
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
-              className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
-            >
-              <option value="" disabled>
-                -- Select Application Purpose --
-              </option>
-              <option value="Academic Clearance">Academic Clearance</option>
-              <option value="Financial Clearance">Financial Clearance</option>
-              <option value="Internship Completion">Internship Completion</option>
-              <option value="FYP Clearance">FYP Clearance</option>
-              <option value="Transport Clearance">Transport Clearance</option>
-              <option value="Library Card">Library Card</option>
-              <option value="University Clearance">University Clearance</option>
-              
-            </select>
-          </div>
+        
 
-          {/* Hostel Residency */}
-          <div className="mt-3 flex justify-center items-start flex-col gap-1">
-            <label className="text-sm text-slate-600">Do you reside in a hostel?</label>
-            <div className="flex gap-5">
-              <label>
-                <input
-                  type="radio"
-                  value="yes"
-                  checked={isHostelResident === "yes"}
-                  onChange={(e) => setIsHostelResident(e.target.value)}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="no"
-                  checked={isHostelResident === "no"}
-                  onChange={(e) => setIsHostelResident(e.target.value)}
-                />
-                No
-              </label>
+        
+
+
+          {/* REASON */}
+<div className="mt-3 flex justify-center items-start flex-col gap-1">
+  <label className="text-sm text-slate-600">Reason for Leaving/ Clearance</label>
+  <select
+    value={reason}
+    onChange={(e) => setReason(e.target.value)}
+    className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+  >
+    <option value="" disabled>
+      -- Select Reason --
+    </option>
+    <option value="Migration">Migration</option>
+    <option value="Degree Completion">Degree Completion</option>
+    <option value="Transfer to Another University">Transfer to Another University</option>
+    <option value="Financial Issues">Financial Issues</option>
+    <option value="Personal Reasons">Personal Reasons</option>
+    <option value="Medical Reasons">Medical Reasons</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
+
+{/* Mailing Address */}
+<div className="mt-3 flex justify-center items-start flex-col gap-1">
+  <label className="text-sm text-slate-600">Mailing Address</label>
+  <input
+    type="text"
+    value={mailingAddress}
+    onChange={(e) => setMailingAddress(e.target.value)}
+    placeholder="Enter your mailing address"
+    className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+  />
+</div>
+
+
+{/* Library Enrollment and Hostel Residency */}
+<div className="mt-3 flex justify-between items-start gap-10">
+  {/* Library Enrollment */}
+  <div className="flex flex-col gap-1 w-1/2">
+    <label className="text-sm text-slate-600">Are you enrolled in a library?</label>
+    <div className="flex gap-5">
+      <label>
+        <input
+          type="radio"
+          value="yes"
+          checked={isLibraryEnrolled === "yes"}
+          onChange={(e) => setIsLibraryEnrolled(e.target.value)}
+        />
+        Yes
+      </label>
+      <label>
+        <input
+          type="radio"
+          value="no"
+          checked={isLibraryEnrolled === "no"}
+          onChange={(e) => setIsLibraryEnrolled(e.target.value)}
+        />
+        No
+      </label>
+    </div>
+  </div>
+
+  {/* Hostel Residency */}
+  <div className="flex flex-col gap-1 w-1/2">
+    <label className="text-sm text-slate-600">Do you reside in a hostel?</label>
+    <div className="flex gap-5">
+      <label>
+        <input
+          type="radio"
+          value="yes"
+          checked={isHostelResident === "yes"}
+          onChange={(e) => setIsHostelResident(e.target.value)}
+        />
+        Yes
+      </label>
+      <label>
+        <input
+          type="radio"
+          value="no"
+          checked={isHostelResident === "no"}
+          onChange={(e) => setIsHostelResident(e.target.value)}
+        />
+        No
+      </label>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+          {/* Library Dropdown (Conditionally Rendered) */}
+          {isLibraryEnrolled === "yes" && (
+            <div className="mt-3 flex justify-center items-start flex-col gap-1">
+              <label className="text-sm text-slate-600">Select Your Library</label>
+              <select
+                value={libraryName}
+                onChange={(e) => setLibraryName(e.target.value)}
+                className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+              >
+                <option value="" disabled>
+                  -- Select Library --
+                </option>
+                <option value="Fazal-i-Hussain Library">Fazal-i-Hussain Library</option>
+                <option value="Postgraduate Library">Postgraduate Library</option>
+                <option value="Life Sciences Library">Life Sciences Library</option>
+                <option value="Departmental Libraries">Departmental Libraries</option>
+                <option value="Central Library">Central Library</option>
+                <option value="Main Library">Main Library</option>
+                <option value="Law Library">Law Library</option>
+              </select>
             </div>
-          </div>
+          )}
+
+
+        
 
           {/* Hostel Dropdown (Conditionally Rendered) */}
           {isHostelResident === "yes" && (
@@ -160,16 +249,17 @@ const ApplicationForm = () => {
           )}
 
 
- {/* Library Enrollment */}
-          <div className="mt-3 flex justify-center items-start flex-col gap-1">
-            <label className="text-sm text-slate-600">Are you enrolled in a library?</label>
+
+ {/* University Student Card Option */}
+ <div className="mt-3 flex justify-center items-start flex-col gap-1">
+            <label className="text-sm text-slate-600">Do you want your University Student Card?</label>
             <div className="flex gap-5">
               <label>
                 <input
                   type="radio"
                   value="yes"
-                  checked={isLibraryEnrolled === "yes"}
-                  onChange={(e) => setIsLibraryEnrolled(e.target.value)}
+                  checked={studentCardPossession === "yes"}
+                  onChange={(e) => setStudentCardPossession(e.target.value)}
                 />
                 Yes
               </label>
@@ -177,36 +267,18 @@ const ApplicationForm = () => {
                 <input
                   type="radio"
                   value="no"
-                  checked={isLibraryEnrolled === "no"}
-                  onChange={(e) => setIsLibraryEnrolled(e.target.value)}
+                  checked={studentCardPossession === "no"}
+                  onChange={(e) => setStudentCardPossession(e.target.value)}
                 />
                 No
               </label>
             </div>
           </div>
 
-          {/* Library Dropdown (Conditionally Rendered) */}
-          {isLibraryEnrolled === "yes" && (
-            <div className="mt-3 flex justify-center items-start flex-col gap-1">
-              <label className="text-sm text-slate-600">Select Your Library</label>
-              <select
-                value={libraryName}
-                onChange={(e) => setLibraryName(e.target.value)}
-                className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
-              >
-                <option value="" disabled>
-                  -- Select Library --
-                </option>
-                <option value="Fazal-i-Hussain Library">Fazal-i-Hussain Library</option>
-                <option value="Postgraduate Library">Postgraduate Library</option>
-                <option value="Life Sciences Library">Life Sciences Library</option>
-                <option value="Departmental Libraries">Departmental Libraries</option>
-                <option value="Central Library">Central Library</option>
-                <option value="Main Library">Main Library</option>
-                <option value="Law Library">Law Library</option>
-              </select>
-            </div>
-          )}
+          
+
+ 
+
 
           {/* Submit Button */}
           <button
@@ -217,6 +289,9 @@ const ApplicationForm = () => {
           </button>
         </form>
       </div>
+
+
+
     </div>
   );
 };
