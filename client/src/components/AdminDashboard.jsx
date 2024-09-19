@@ -8,26 +8,22 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const [showModel, setShowModel] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  console.log(applications);
 
   useEffect(() => {
     const fetchAllApplications = async () => {
       try {
-        setLoading(true);
         const res = await axios.get(`http://localhost:3000/applications`);
-        setApplications(res.data.allApplications);
+        console.log(res);
+        setApplications(res.data.allApplications[0]);
       } catch (error) {
         console.log(error.message);
-      } finally {
-        setLoading(false);
       }
     };
     fetchAllApplications();
   }, [showModel]);
 
-
-  const tableRows = applications[0]?.map((value, index) => {
+  const tableRows = applications?.map((value, index) => {
     const status = value.app_status;
     const statusClass =
       status === "Approved"
@@ -42,7 +38,6 @@ const AdminDashboard = () => {
 
     return (
       <tr
-        // onClick={() => navigate(`/student-applications/${value.id}`)}
         onClick={() => {
           setShowModel(true);
           setSelectedApp(value);
@@ -60,6 +55,19 @@ const AdminDashboard = () => {
         <td className="px-6 py-3">{value.roll_no}</td>
         <td className="px-6 py-3">{value.semester}</td>
         <td className="px-6 py-3">{value.dept}</td>
+        <td className="px-6 py-3">{value.library_status}</td>
+        <td className="px-6 py-3">
+          {value.lib_name || (
+            <span className="bg-slate-200 py-1 px-2 text-xs rounded">NULL</span>
+          )}
+        </td>
+        <td className="px-6 py-3">{value.hostel_status}</td>
+        <td className="px-6 py-3">
+          {value.hostel_name || (
+            <span className="bg-slate-200 py-1 px-2 text-xs rounded">NULL</span>
+          )}
+        </td>
+        <td className="px-6 py-3">{value.uni_card_possesion}</td>
         <td className="px-6 py-3">{value.reason}</td>
         <td className="px-6 py-3">{value.mailing_address}</td>
         <td className="px-6 py-3">
@@ -116,10 +124,25 @@ const AdminDashboard = () => {
                   DEPARTMENT
                 </th>
                 <th scope="col" class="px-6 py-3">
+                  Library Status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Library Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Hostel Status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Hostel Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Uni Card
+                </th>
+                <th scope="col" class="px-6 py-3">
                   REASON
                 </th>
                 <th scope="col" class="px-6 py-3">
-                  MAILING ADDRESS
+                  ADDRESS
                 </th>
                 <th scope="col" class="px-6 py-3">
                   STATUS

@@ -17,8 +17,7 @@ const StudentDashboard = () => {
         const res = await axios.get(
           `http://localhost:3000/applications/${UserData.id}`
         );
-        console.log(res);
-        setApplications(res.data.stdApplications);
+        setApplications(res.data.stdApplications[0]);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -27,14 +26,6 @@ const StudentDashboard = () => {
     };
     fetchStudentApplications();
   }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen -mt-20">
-  //       <ScaleLoader height={50} width={5} color="#9333EA" />
-  //     </div>
-  //   );
-  // }
 
   const tableRows = applications?.map((value, index) => {
     const status = value.status;
@@ -55,12 +46,12 @@ const StudentDashboard = () => {
           scope="row"
           className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap"
         >
-          {value.name}
+          {value.std_name}
         </th>
         <td className="px-6 py-3">{value.roll_no}</td>
         <td className="px-6 py-3">{value.semester}</td>
         <td className="px-6 py-3">{value.dept}</td>
-        <td className="px-6 py-3">{value.purpose}</td>
+        <td className="px-6 py-3">{value.reason}</td>
         <td className="px-6 py-3">
           <span className={`${statusClass} py-1 px-2.5 rounded text-xs`}>
             {status}
@@ -115,7 +106,7 @@ const StudentDashboard = () => {
                   DEPARTMENT
                 </th>
                 <th scope="col" class="px-6 py-3">
-                  PURPOSE
+                  REASON
                 </th>
                 <th scope="col" class="px-6 py-3">
                   STATUS
