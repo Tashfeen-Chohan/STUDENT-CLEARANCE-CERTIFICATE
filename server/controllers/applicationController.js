@@ -79,9 +79,21 @@ const updateApplication = async (req, res) => {
   }
 };
 
+const getAllLibrariesAndHostels = async (req, res) => {
+  try {
+    const libraries = await db.execute("call GetAllLibraries()");
+    const hostels = await db.execute("call GetAllHostels()");
+    res.status(200).send({libraries, hostels})
+  } catch (error) {
+    res.status(500).send({message: "Something went wrong!"})
+    console.log(error.message)
+  }
+}
+
 module.exports = {
   newApplication,
   getAllApplications,
   getStudentApplications,
   updateApplication,
+  getAllLibrariesAndHostels
 };
