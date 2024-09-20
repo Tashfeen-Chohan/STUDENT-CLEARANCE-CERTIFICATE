@@ -37,7 +37,7 @@ const StudentDashboard = () => {
         ? "bg-[#0569FF] text-white"
         : "text-gray-600 bg-gray-200";
     return (
-      <tr key={index} className="bg-white border-b hover:bg-gray-50">
+      <tr key={index} className="bg-white text-xs border-b hover:bg-gray-50">
         <td className="px-6 py-3">{index + 1}</td>
         <th
           scope="row"

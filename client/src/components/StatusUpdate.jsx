@@ -6,12 +6,8 @@ import { useNavigate } from "react-router-dom";
 const StatusUpdate = ({ onClose, application }) => {
   const modelRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
-  const [status, setStatus] = useState(application.status);
+  const [status, setStatus] = useState(application.app_status);
   const [comment, setComment] = useState(application.comment);
-  const UserData = JSON.parse(localStorage.getItem("User"));
-  const navigate = useNavigate();
-
-  console.log(application)
 
   useEffect(() => {
     setIsVisible(true);
@@ -48,16 +44,16 @@ const StatusUpdate = ({ onClose, application }) => {
   return (
     <div
       ref={modelRef}
-      className="fixed inset-0 z-20 flex items-center justify-center bg-slate-400 bg-opacity-50 backdrop-blur-sm transition-all
-    "
+      className="fixed inset-0 z-20 flex items-center justify-center bg-slate-400 bg-opacity-50 backdrop-blur-sm transition-all"
     >
       <div
-        className={`flex  max-w-2xl w-full flex-col items-center justify-center rounded-md bg-white ${
+        className={`flex overflow-y-auto  max-w-3xl w-full flex-col flex-grow items-center justify-center rounded-md bg-white ${
           isVisible ? "modal-enter-active" : "modal-exit-active"
         }`}
+        // style={{maxHeight: "95vh", overflowY: "auto"}}
       >
         <div className=" w-full border rounded-md  pb-7 flex justify-center items-center flex-col">
-          <div className="bg-purple-500 rounded-t-md w-full text-white flex justify-center items-center px-5 flex-col py-2">
+          <div className="bg-purple-500 w-full text-white flex justify-center items-center px-5 flex-col py-2">
             <h2 className="text-2xl font-bold text-white">
               Student Clearance Form
             </h2>
@@ -65,44 +61,90 @@ const StatusUpdate = ({ onClose, application }) => {
               Update the application status to finalize the clearance process.
             </p>
           </div>
-          <form className="mt-6 w-[80%] mx-auto" onSubmit={handleSubmit}>
-            {/* Name & Roll NO */}
-            <div className="flex justify-center items-center gap-5 ">
-              <div className="space-y-1 w-[50%]">
+          <form className="mt-6 w-[90%] mx-auto" onSubmit={handleSubmit}>
+            {/* Name & Roll NO & SEMESTER */}
+            <div className="flex justify-center items-center gap-3 ">
+              <div className="space-y-1 w-1/3">
                 <label className="text-sm text-slate-600">Name</label>
                 <input type="text" value={application.std_name} disabled />
               </div>
-              <div className=" space-y-1 w-[50%]">
+              <div className=" space-y-1 w-1/3">
                 <label className="text-sm text-slate-600">Roll No</label>
                 <input type="text" value={application.roll_no} disabled />
               </div>
-            </div>
-
-            {/* Semester & Dep */}
-            <div className="flex justify-center items-center gap-5">
-              <div className="mt-3 space-y-1 w-[50%]">
+              <div className="space-y-1 w-1/3">
                 <label className="text-sm text-slate-600">Semester</label>
                 <input type="text" value={application.semester} disabled />
               </div>
+            </div>
+
+            {/* Dep & ADDRESS & CARD */}
+            <div className="flex justify-center items-center gap-3 mt-3">
               {/* Department */}
-              <div className="mt-3 space-y-1 w-[50%]">
+              <div className="space-y-1 w-1/3">
                 <label className="text-sm text-slate-600">Department</label>
                 <input type="text" value={application.dept} disabled />
               </div>
+
+              {/* MAILING ADDRESS */}
+              <div className="space-y-1 w-1/3">
+                <label className="text-sm text-slate-600">
+                  Mailing Address
+                </label>
+                <input
+                  type="text"
+                  value={application.mailing_address}
+                  disabled
+                />
+              </div>
+
+              {/* Student Card */}
+              <div className="space-y-1 w-1/3">
+                <label className="text-sm text-slate-600">Student Card</label>
+                <input
+                  type="text"
+                  value={application.uni_card_possesion}
+                  disabled
+                />
+              </div>
             </div>
 
-            {/* PURPOSE & STATUS */}
-            <div className="flex justify-center items-center gap-5">
-              <div className="mt-3 space-y-1 w-[50%]">
-                <label className="text-sm text-slate-600">Purpose</label>
+            {/* Library and Hostel & Reason */}
+            <div className="flex justify-center items-center gap-3 mt-3">
+              {/* LIBRARY */}
+              <div className="space-y-1 w-1/3">
+                <label className="text-sm text-slate-600">Library</label>
+                <input
+                  type="text"
+                  value={application.lib_name || "N/A"}
+                  disabled
+                />
+              </div>
+              {/* Hostel */}
+              <div className="space-y-1 w-1/3">
+                <label className="text-sm text-slate-600">Hostel</label>
+                <input
+                  type="text"
+                  value={application.hostel_name || "N/A"}
+                  disabled
+                />
+              </div>
+              <div className="space-y-1 w-1/3">
+                <label className="text-sm text-slate-600">
+                  Reason For Application
+                </label>
                 <input type="text" value={application.reason} disabled />
               </div>
-              <div className="w-[50%] mt-3 space-y-1">
+            </div>
+
+            {/* STATUS & Comment */}
+            <div className="flex justify-center items-start gap-3 mt-3">
+              <div className="w-1/2 space-y-1">
                 <label className="text-sm text-slate-600">Status</label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-4 border rounded"
+                  className="w-full outline-none focus:ring-2 ring-purple-500 bg-slate-50 py-2 px-2.5 border rounded"
                 >
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
@@ -110,16 +152,16 @@ const StatusUpdate = ({ onClose, application }) => {
                   <option value="Rejected">Rejected</option>
                 </select>
               </div>
-            </div>
+              {/* COMMENT */}
 
-            {/* COMMENT */}
-            <div className="mt-3 space-y-1">
-              <label className="text-sm text-slate-600">Comment</label>
-              <textarea
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className="w-full h-16 focus:ring-2 focus:ring-purple-500 outline-none py-1 px-5 text-xs bg-slate-50 border rounded"
-              ></textarea>
+              <div className=" space-y-1 w-1/2">
+                <label className="text-sm text-slate-600">Comment</label>
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className="w-full h-10.5 focus:ring-2 focus:ring-purple-500 outline-none py-1 px-2 text-xs bg-slate-50 border rounded"
+                ></textarea>
+              </div>
             </div>
 
             {/* ACTION BUTTONS */}

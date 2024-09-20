@@ -43,7 +43,7 @@ const AdminDashboard = () => {
           setSelectedApp(value);
         }}
         key={index}
-        className="bg-white cursor-pointer border-b hover:bg-gray-50"
+        className="bg-white text-xs cursor-pointer border-b hover:bg-gray-50"
       >
         <td className="px-6 py-3">{index + 1}</td>
         <th
