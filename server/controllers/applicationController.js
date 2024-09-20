@@ -1,4 +1,6 @@
 const db = require("../db");
+const onFinished = require("on-finished");
+const logRequest = require("../logger");
 
 const newApplication = async (req, res) => {
   const {
@@ -39,9 +41,12 @@ const newApplication = async (req, res) => {
 };
 
 const getAllApplications = async (req, res) => {
+  const startTime = Date.now();
   try {
-    const [allApplications] = await db.execute("Call GetAllApplications()");
-    return res.status(200).send({ allApplications });
+    const query = "Call GetAllApplications()";
+    const [allApplications] = await db.execute(query);
+    res.status(200).send({ allApplications });
+    logRequest(req, res, startTime)
   } catch (error) {
     res.status(500).send({ message: "Something went wrong!" });
     console.log(error.message);
